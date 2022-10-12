@@ -1,11 +1,13 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { connect } from 'http2';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { connectDB } from '../../middlewares/connectDB';
 
 type CadastroRequest = {
     email : string,
     password : string
 }
 
-export default (
+const handler =  (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -28,12 +30,14 @@ export default (
         }
 
         const senhaRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8,})$/;
-        if(!senhaRegex.test(dados.password)){
+        /*if(!senhaRegex.test(dados.password)){
             return res.status(400).json({error: 'Senha inválida'});
-        }
+        }*/
 
         res.status(200).json({ msg: 'Cadastro concluido com sucesso' })
     }catch(e : any){
         console.log("Erro ao efetuar o cadastro: " + e.message);
     }
 }
+
+export default connectDB(handler);
