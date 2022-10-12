@@ -9,7 +9,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ${APPDATA}/mongodb_data:/data/db
+      - ./mongodb_data:/data/db
     networks:
       - mongo-compose-network
 
