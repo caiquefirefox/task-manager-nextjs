@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Login } from '../containers/Login'
+import { Principal } from '../containers/Principal'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
@@ -19,7 +20,7 @@ const Home: NextPage = () => {
 
   return (
     <> 
-      {!accessToken ? <Login setAccessToken={setAccessToken} /> : <><h1>Bem vindo</h1></>}
+      {!accessToken ? <Login setAccessToken={setAccessToken} /> : <Principal setAccessToken={setAccessToken} />}
     </>
   )
 }

@@ -1,18 +1,17 @@
 import axios, {Method} from "axios";
 
-export const executeRequest = async (endpoint: string, method: Method, body?: any) => {
-    const headers = { 'Content-Type': 'application/json' } as any;
-    //const token = localStorage.getItem('token');
+export const executeRequest = (endpoint: string, method : Method, body? : any) => {
+    const headers = { 'Content-Type' : 'application/json'} as any;
 
-    // verificar se tem token salvo no storage e se tiver add no headers
+    const token = localStorage.getItem('accessToken');
+    if(token){
+        headers['Authorization'] = "Bearer " + token;
+    }
 
-    const baseAddress = 'http://localhost:3000/api/';
-    const URL = `${baseAddress}${endpoint}`;
-
-    console.log(`executando:" ${URL}, metodo: ${method}, e body: ${body}`);
-
+    const URL = 'http://localhost:3000/api/' + endpoint;
+    console.log(`executando: ${URL}, metodo: ${method} e body: ${body}`);
     return axios.request({
-        url: URL,
+        url : URL,
         method,
         data: body? body : '',
         headers,
