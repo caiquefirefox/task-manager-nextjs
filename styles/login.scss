@@ -9,6 +9,13 @@
     }
 
     .form{
+        p{
+            text-align: center;
+            color: $errorColor;
+            font-weight: bold;
+            max-width: 300px;
+        }
+
         div{
             display: flex;
             flex-direction: row;
@@ -81,6 +88,10 @@
             border-radius: 32px;
             padding: 80px 40px;
             margin-left: 20px;
+
+            p{
+                max-width: none;
+            }
 
             div{
                 img{
