@@ -8,7 +8,7 @@ type ListProps = {
 
 export const List : NextPage<ListProps> = ({list}) =>{
     return (
-        <div className={'container-list' + (list && list.length > 0 ? '' : ' not-empty' )}>
+        <div className={'container-list' + (list && list.length > 0 ? ' not-empty' : '')}>
             {
                 list && list.length > 0 
                 ? list.map(i => <Item key={i._id} task={i} />) 
