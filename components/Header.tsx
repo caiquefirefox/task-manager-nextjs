@@ -2,17 +2,18 @@
 import type {NextPage} from 'next';
 
 type HeaderProps = {
-  sair() : void
+  sair() : void,
+  showModal() : void
 }
 
-export const Header : NextPage<HeaderProps> = ({sair}) => {
+export const Header : NextPage<HeaderProps> = ({sair, showModal}) => {
   const fullName = localStorage.getItem('name');
   const firstName = fullName?.split(' ')[0] || '';
 
   return (
     <div className='container-header'>
       <img src="/logo.svg" alt="Logo Fiap" className='logo'/>
-      <button><span>+</span>Adicionar tarefa</button>
+      <button onClick={showModal}><span>+</span>Adicionar tarefa</button>
       <div className='desktop'>
         <span>Olá, {firstName}</span>
         <img src="/exit-desktop.svg" alt='sair' onClick={sair}></img>
