@@ -9,12 +9,19 @@
     }
 
     .form{
-        p{
+        .error{
             text-align: center;
             color: $errorColor;
             font-weight: bold;
             max-width: 300px;
         }
+
+        .success{
+            text-align: center;
+            color: $successColor;
+            font-weight: bold;
+            max-width: 300px;
+        } 
 
         div{
             display: flex;
@@ -70,6 +77,19 @@
             border-radius:12px;
             margin-top: 30px;
         }
+
+        span{
+            color: $mediumGreyColor;
+            text-decoration: underline;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .div-span{
+            padding: 0px;
+        }
     }
 
     @media screen and (min-width: $mediaQueryDesktop) {
@@ -89,6 +109,10 @@
             padding: 80px 40px;
             margin-left: 20px;
 
+            .success{
+                max-width: 400px;
+            } 
+    
             p{
                 max-width: none;
             }

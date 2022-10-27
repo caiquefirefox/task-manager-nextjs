@@ -9,10 +9,20 @@ type LoginProps = {
 
 export const Login : NextPage<LoginProps> = ({setAccessToken}) => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [typeScreen, setTypeScreen] = useState(1);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  //Login
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  //Cadastro
+  const [nomeCadastro, setNomeRegister] = useState('');
+  const [emailCadastro, setEmailRegister] = useState('');
+  const [passwordCadastro, setPasswordRegister] = useState('');
+  const [successInRegister, setSuccessInRegister] = useState('');
+  
 
   const doLogin = async () => { 
     try {
@@ -49,11 +59,58 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) => {
     setLoading(false);
   }
 
+  const doRegister = async () => { 
+    try {
+      if (!nomeCadastro || !emailCadastro || !passwordCadastro) {
+        return setError('Favor, preencha todos os campos');
+      }
+
+      setLoading(true);
+
+      const body ={
+        name: nomeCadastro,
+        email: emailCadastro,
+        password: passwordCadastro
+      };
+
+      const result = await executeRequest('user', 'POST', body);
+      setSuccessInRegister('Cadastro realizado com sucesso! Informe abaixo os dados para login.');
+      changeScreen(1);
+    } catch (error : any) {
+      console.log('Ocorreu um erro ao efetuar o cadastro: ', error);
+
+      if (error?.response?.data?.error) {
+        setError(error?.response?.data?.error);
+      }else{
+        setError('Ocorreu um erro ao efetuar cadastro, tente novamente mais tarde');
+      }
+    }
+
+    setLoading(false);
+  }
+
+  const changeScreen = (type: number) => {
+    clearDataOfScreen();
+    setTypeScreen(type)
+  }
+
+  const clearDataOfScreen = () => {
+    setError('');
+    setEmail('');
+    setPassword('');
+    setNomeRegister('');
+    setEmailRegister('');
+    setPasswordRegister('');
+  }
+
   return (
       <div className='container-login'>
         <img src="/logo.svg" alt="Logo Fiap" className='logo'/>
+        
+        {typeScreen == 1 &&
         <div className='form'>
           {error && <p className='error'>{error}</p>}
+          {successInRegister && <p className='success'>{successInRegister}</p>}
             <div>
                 <img src="/mail.svg" alt="Login" />
                 <input type="text" placeholder="Login" 
@@ -64,8 +121,39 @@ export const Login : NextPage<LoginProps> = ({setAccessToken}) => {
                 <input type="password" placeholder="Senha" 
                   value={password} onChange={e => setPassword(e.target.value)} />
             </div>
-            <button type='button' onClick={doLogin} disabled={loading}>{loading ? 'Carregando...' : 'Login'}</button>
-        </div>
+            <div>
+              <button type='button' onClick={doLogin} disabled={loading}>{loading ? 'Carregando...' : 'Login'}</button>
+            </div>
+            <div className='div-span'>
+              <span onClick={e => changeScreen(2)}>Cadastre-se</span>
+            </div>
+        </div>}
+
+        {typeScreen == 2 &&
+        <div className='form'>
+          {error && <p className='error'>{error}</p>}
+          <div>
+                <img src="/user-register.png" alt="Nome" />
+                <input type="text" placeholder="Nome" 
+                  value={nomeCadastro} onChange={e => setNomeRegister(e.target.value)} />
+            </div>
+            <div>
+                <img src="/mail.svg" alt="Email" />
+                <input type="text" placeholder="Email" 
+                  value={emailCadastro} onChange={e => setEmailRegister(e.target.value)} />
+            </div>
+            <div>
+                <img src="/lock.svg" alt="Senha" />
+                <input type="password" placeholder="Senha" 
+                  value={passwordCadastro} onChange={e => setPasswordRegister(e.target.value)} />
+            </div>
+            <div>
+              <button type='button' onClick={doRegister} disabled={loading}>{loading ? 'Carregando...' : 'Cadastrar'}</button>
+            </div>
+            <div className='div-span'>
+              <span onClick={e => changeScreen(1)}>Cancelar</span>
+            </div>
+        </div>}
       </div>
   );
 }
