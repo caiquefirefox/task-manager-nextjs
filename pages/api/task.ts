@@ -63,11 +63,11 @@ const updateTask = async (req:NextApiRequest, res:NextApiResponse<DefaultRespons
         }
 
         if(task.finishPrevisionDate) {
-            taskFound.finishPrevisionDate = task.finishPrevisionDate;
+            taskFound.finishPrevisionDate = formatDate(task.finishPrevisionDate);
         }
 
         if(task.finishDate) {
-            taskFound.finishDate = task.finishDate;
+            taskFound.finishDate = formatDate(task.finishDate);
         }
         
         await TaskModel.findByIdAndUpdate({ _id : taskFound._id}, taskFound);
@@ -151,6 +151,14 @@ const saveTask = async(req:NextApiRequest, res:NextApiResponse<DefaultResponseMs
             return res.status(400).json({ error: 'Data de previsao invalida ou menor que hoje'});
         }
 
+        if(task.finishPrevisionDate){
+            task.finishPrevisionDate = formatDate(task.finishPrevisionDate);
+        }
+
+        if(task.finishDate){
+            task.finishDate = formatDate(task.finishDate);
+        }
+
         const final = {
             ...task,
             userId,
@@ -162,6 +170,10 @@ const saveTask = async(req:NextApiRequest, res:NextApiResponse<DefaultResponseMs
     }
 
     return res.status(400).json({ error: 'Parametros de entrada invalido'});
+}
+
+const formatDate = (date : Date) =>{
+    return moment(date).locale('pt-br').toDate();
 }
 
 export default connectDB(jwtValidator(handler));
